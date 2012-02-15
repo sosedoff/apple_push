@@ -1,0 +1,39 @@
+#!/usr/bin/env ruby
+
+lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
+$LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
+
+require 'optparse'
+require 'eventmachine'
+require 'thin'
+require 'apple_push'
+
+config_path = ARGV.shift.to_s.strip
+
+if config_path.empty?
+  STDERR.puts "Error: Configuration file required!"
+  exit(1)
+end
+
+config = nil
+begin
+  config = ApplePush::Configuration.load_file(config_path)
+rescue ArgumentError => ex
+  STDERR.puts "Error: #{ex.message}"
+  puts ex.backtrace
+  exit(1)
+end
+
+EM.run do
+  begin
+    ApplePush.configure(config)
+  rescue Exception => ex
+    STDERR.puts "Error: #{ex.message}"
+    exit(1)
+  end
+  
+  host = ApplePush.configuration[:host]
+  port = ApplePush.configuration[:port]
+  
+  Thin::Server.start(ApplePush::Server, host, port)
+end

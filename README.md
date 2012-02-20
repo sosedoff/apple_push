@@ -14,14 +14,9 @@ This will get you the gem
 
 ## Usage
 
-```
-apple_push your_config.yml
-```
-
-Sample configuration file:
+Create a YAML configuration file:
 
 ```yml
----
 host: 127.0.0.1
 port: 27000
   
@@ -34,4 +29,18 @@ live:
   cert: path/to/your/certificate.pem
   key: path/to/your/key.pem
   pool: 1
+```
+
+To start server run:
+
+```
+apple_push path/to/your/config.yml
+```
+
+### Using with foreman
+
+If you want to use apple_push server with foreman, you'll need to create a ```Procfile```:
+
+```
+apn: apple_push config/apn.yml
 ```

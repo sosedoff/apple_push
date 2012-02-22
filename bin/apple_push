@@ -34,5 +34,5 @@ EM.run do
   host = ApplePush.configuration[:host]
   port = ApplePush.configuration[:port]
   
-  Thin::Server.start(ApplePush::Server, host, port, :environment => "development")
+  Thin::Server.start(ApplePush::Server, host, port)
 end

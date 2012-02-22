@@ -1,5 +1,6 @@
 require 'sinatra/base'
 require 'multi_json'
+require 'apple_push/version'
 
 module ApplePush
   class Server < Sinatra::Base
@@ -32,6 +33,10 @@ module ApplePush
           apn.deliver(notification)
         end
       end
+    end
+    
+    get '/' do
+      "{\"version\":\"#{ApplePush::VERSION}\"}"
     end
     
     post %r{/(sandbox|live)} do |mode|

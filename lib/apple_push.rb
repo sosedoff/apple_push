@@ -15,8 +15,9 @@ module ApplePush
     config = ApplePush::Configuration.new(options)
     
     @@options.merge!(
-      :host => config.host || '127.0.0.1',
-      :port => config.port || '27000'
+      :host    => config.host    || '127.0.0.1',
+      :port    => config.port    || '27000',
+      :timeout => config.timeout || 5
     )
     
     if !config.sandbox? && !config.live?
@@ -53,9 +54,12 @@ module ApplePush
     raise ArgumentError, "Path to certificate file required." if !config.cert?      
     raise ArgumentError, "Path to key file required." if !config.cert_key?
   
-    pool_size = Integer(config.pool || 1) rescue 1
-    
-    @@pools[env] = ConnectionPool.new(:size => pool_size, :timeout => 5) do
+    opts = {
+      :size => (Integer(config.pool || 1) rescue 1),
+      :timeout => configuration[:timeout]
+    }
+
+    @@pools[env] = ConnectionPool.new(opts) do
       EM::APN::Client.connect(
         :gateway => env == 'live' ? LIVE_URL : SANDBOX_URL,
         :cert    => File.expand_path(config.cert),

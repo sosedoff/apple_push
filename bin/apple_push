@@ -7,28 +7,30 @@ require 'eventmachine'
 require 'thin'
 require 'apple_push'
 
+def terminate(message, exit_code=1)
+  STDERR.puts(message)
+  exit(exit_code)
+end
+
 config_path = ARGV.shift.to_s.strip
 
 if config_path.empty?
-  STDERR.puts "Error: Configuration file required!"
-  exit(1)
+  terminate("Configuration file required!")
 end
 
 config = nil
+
 begin
   config = ApplePush::Configuration.load_file(config_path)
-rescue ArgumentError => ex
-  STDERR.puts "Error: #{ex.message}"
-  puts ex.backtrace
-  exit(1)
+rescue StandardError => ex
+  terminate(ex.message)
 end
 
 EM.run do
   begin
     ApplePush.configure(config)
-  rescue Exception => ex
-    STDERR.puts "Error: #{ex.message}"
-    exit(1)
+  rescue StandardError => ex
+    terminate(ex.message)
   end
   
   host = ApplePush.configuration[:host]

@@ -9,11 +9,12 @@ module ApplePush
     #
     def self.load_file(path)
       path = File.expand_path(path)
+
       if !File.exists?(path)
         raise ArgumentError, "File \"#{path}\" does not exist."
       end
-      data = YAML.load_file(path)
-      Configuration.new(data)
+      
+      Configuration.new(YAML.load_file(path))
     end
   end
 end

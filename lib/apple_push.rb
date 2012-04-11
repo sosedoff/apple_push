@@ -53,7 +53,7 @@ module ApplePush
     raise ArgumentError, "Path to certificate file required." if !config.cert?      
     raise ArgumentError, "Path to key file required." if !config.cert_key?
   
-    pool_size = Integer(config.pool || 1)
+    pool_size = config.pool? ? config.pool : 1
     
     @@pools[env] = ConnectionPool.new(:size => pool_size, :timeout => 5) do
       EM::APN::Client.connect(

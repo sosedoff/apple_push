@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.version     = ApplePush::VERSION.dup
   s.summary     = "Simple API to send APN notifications"
   s.description = "Sinatra-based server to deliver Apple Push Notifications"
-  s.homepage    = "http://github.com/doejo/apple_push"
+  s.homepage    = "http://github.com/sosedoff/apple_push"
   s.authors     = ["Dan Sosedoff"]
   s.email       = ["dan.sosedoff@gmail.com"]
     

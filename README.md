@@ -1,6 +1,8 @@
 # ApplePush
 
-Sinatra-based API service to send Apple Push Notifications (APN)
+Multi-environment Sinatra-based API service to communicate with Apple Push Notifications server. 
+
+[![Build Status](https://secure.travis-ci.org/sosedoff/apple_push.png?branch=master)](http://travis-ci.org/sosedoff/apple_push)
 
 ## Why?
 

@@ -3,6 +3,7 @@
 lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
 $LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
 
+require 'rubygems'
 require 'eventmachine'
 require 'thin'
 require 'apple_push'
@@ -22,19 +23,23 @@ config = nil
 
 begin
   config = ApplePush::Configuration.load_file(config_path)
-rescue StandardError => ex
+rescue Exception => ex
   terminate(ex.message)
 end
 
 EM.run do
   begin
     ApplePush.configure(config)
-  rescue StandardError => ex
+  rescue Exception => ex
     terminate(ex.message)
   end
   
   host = ApplePush.configuration[:host]
   port = ApplePush.configuration[:port]
-  
-  Thin::Server.start(ApplePush::Server, host, port)
+
+  begin
+    Thin::Server.start(ApplePush::Server, host, port)
+  rescue Exception => error
+    terminate(error.message)
+  end
 end

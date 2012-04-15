@@ -1,10 +1,11 @@
 require 'spec_helper'
 
 describe ApplePush::Server do
-  it 'responds with json' do
+  it 'responds with utf8 json' do
     get '/'
     last_response.should be_ok
-    last_response.content_type.should eq("application/json;encoding=utf8, charset=utf-8")
+    last_response.content_type.should match(/application\/json/i)
+    last_response.content_type.should match(/encoding=utf8/i)
   end
 
   it 'responds with version' do

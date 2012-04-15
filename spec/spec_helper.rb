@@ -7,8 +7,9 @@ RSpec.configure do |conf|
   conf.include Rack::Test::Methods
 end
 
-def fixture_path
-  File.expand_path("../fixtures", __FILE__)
+def fixture_path(target=nil)
+  path = File.expand_path("../fixtures", __FILE__)
+  target.nil? ? path : File.join(path, target)
 end
 
 def fixture(file)

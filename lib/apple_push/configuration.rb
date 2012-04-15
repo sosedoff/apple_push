@@ -13,8 +13,14 @@ module ApplePush
       if !File.exists?(path)
         raise ArgumentError, "File \"#{path}\" does not exist."
       end
+
+      data = YAML.load_file(path)
+
+      unless data.kind_of?(Hash)
+        raise ArgumentError, "Invalid configuration file."
+      end
       
-      Configuration.new(YAML.load_file(path))
+      Configuration.new(data)
     end
   end
 end

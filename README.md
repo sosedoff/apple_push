@@ -25,6 +25,8 @@ bundle install
 rake install
 ```
 
+Works with Ruby 1.9.2, 1.9.3, 2.0.0
+
 ## Usage
 
 Create a YAML configuration file:
